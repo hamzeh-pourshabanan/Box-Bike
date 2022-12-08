@@ -11,11 +11,14 @@ import com.mapbox.maps.MapView
 import com.mapbox.maps.Style
 import com.mapbox.maps.extension.style.expressions.generated.Expression.Companion.interpolate
 import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.PuckBearingSource
 import com.mapbox.maps.plugin.gestures.OnMoveListener
 import com.mapbox.maps.plugin.gestures.gestures
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorBearingChangedListener
 import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
 import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.plugin.locationcomponent.location2
+import java.lang.ref.WeakReference
 
 class LocationActivity : AppCompatActivity() {
     private lateinit var locationPermissionHelper: LocationPermissionHelper
@@ -45,13 +48,17 @@ class LocationActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         mapView = MapView(this)
         setContentView(mapView)
+        locationPermissionHelper = LocationPermissionHelper(WeakReference(this))
+        locationPermissionHelper.checkPermissions {
+            onMapReady()
+        }
     }
 
 
     private fun onMapReady() {
         mapView.getMapboxMap().setCamera(
             CameraOptions.Builder()
-                .zoom(14.0)
+                .zoom(16.0)
                 .build()
         )
         mapView.getMapboxMap().loadStyleUri(
@@ -73,11 +80,11 @@ class LocationActivity : AppCompatActivity() {
             this.locationPuck = LocationPuck2D(
                 bearingImage = AppCompatResources.getDrawable(
                     this@LocationActivity,
-                    com.mapbox.maps.R.drawable.abc_ab_share_pack_mtrl_alpha,
+                    com.mapbox.maps.R.drawable.mapbox_user_puck_icon,
                 ),
                 shadowImage = AppCompatResources.getDrawable(
                     this@LocationActivity,
-                    com.mapbox.maps.plugin.scalebar.R.drawable.abc_action_bar_item_background_material,
+                    com.mapbox.maps.R.drawable.mapbox_user_icon_shadow,
                 ),
                 scaleExpression = interpolate {
                     linear()
@@ -94,7 +101,8 @@ class LocationActivity : AppCompatActivity() {
             )
         }
         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+//        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
+        mapView.location2.puckBearingSource = PuckBearingSource.HEADING
     }
 
     private fun onCameraTrackingDismissed() {
