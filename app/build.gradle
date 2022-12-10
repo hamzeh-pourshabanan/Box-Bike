@@ -1,6 +1,10 @@
 plugins {
     id 'com.android.application'
     id 'org.jetbrains.kotlin.android'
+    id 'com.google.gms.google-services'
+    id 'kotlin-android'
+    id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
+    id 'org.jetbrains.kotlin.android.extensions'
 }
 
 android {
@@ -30,12 +34,23 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+    androidExtensions {
+        experimental = true
+    }
 }
 
 dependencies {
     def multidex_version = "2.0.1"
     implementation "androidx.multidex:multidex:$multidex_version"
     api project(path: ':location')
+    implementation platform('com.google.firebase:firebase-bom:31.1.1')
+    // Firebase Cloud Messaging (Kotlin)
+    //for fcm
+    implementation 'com.google.firebase:firebase-messaging:23.1.1'
+
+    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
