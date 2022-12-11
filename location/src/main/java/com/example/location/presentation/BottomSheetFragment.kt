@@ -9,9 +9,12 @@ import android.view.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
 import androidx.fragment.app.Fragment
+import com.example.location.DestinationsUiModel
 import com.example.location.LocationActivity
+import com.example.location.R
 import com.example.location.databinding.FragmentBottomSheetBinding
 import com.example.location.domain.TerminalsDomainModel
+import com.example.location.presentation.adapter.DestinationAdapter
 
 class BottomSheetFragment: Fragment() {
     private var _binding: FragmentBottomSheetBinding? = null
@@ -23,6 +26,8 @@ class BottomSheetFragment: Fragment() {
     private lateinit var myView: LinearLayout
     private lateinit var terminalsModel:TerminalsDomainModel
 
+    private lateinit var destinationAdapter: DestinationAdapter
+
     companion object {
         fun newInstance(model: TerminalsDomainModel): BottomSheetFragment {
             val args = Bundle().apply {
@@ -33,6 +38,11 @@ class BottomSheetFragment: Fragment() {
             }
             return fragment
         }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        destinationAdapter = DestinationAdapter()
     }
 
     override fun onCreateView(
@@ -117,6 +127,17 @@ class BottomSheetFragment: Fragment() {
 
             false
         }
+
+        if (this::terminalsModel.isInitialized) {
+            binding.originAddress.text =  terminalsModel.origin?.address
+            binding.destinationRv.adapter = destinationAdapter
+            destinationAdapter.submitList(terminalsModel.destinations.map { DestinationsUiModel(address = it.address, image = when(it.destNumber) {
+                1 -> R.drawable.ic_dest_one
+                2 -> R.drawable.ic_dest_two
+                else -> R.drawable.ic_top
+            }) })
+        }
+
     }
 
     override fun onDestroyView() {

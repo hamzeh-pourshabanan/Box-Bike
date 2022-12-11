@@ -28,10 +28,12 @@ data class Destination(
     @SerialName("lat")
     val lat: Double,
     @SerialName("long")
-    val long: Double
+    val long: Double,
+    @SerialName("destNumber")
+    val destNumber: Int
 ): DataModel {
     override fun toDomainModel(): com.example.location.domain.Destination {
-        return com.example.location.domain.Destination(address, lat, long)
+        return com.example.location.domain.Destination(address, lat, long, destNumber)
     }
 }
 

@@ -16,7 +16,8 @@ class TerminalsDomainModel(
 data class Destination(
     val address: String,
     val lat: Double,
-    val long: Double
+    val long: Double,
+    val destNumber: Int
 ): DomainModel, Parcelable
 
 @Parcelize

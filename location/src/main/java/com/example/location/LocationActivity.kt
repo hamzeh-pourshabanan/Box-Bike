@@ -35,6 +35,7 @@ import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListen
 import com.mapbox.maps.plugin.locationcomponent.location
 import com.mapbox.maps.plugin.locationcomponent.location2
 import java.lang.ref.WeakReference
+import java.text.NumberFormat
 
 class LocationActivity : AppCompatActivity() {
     private lateinit var locationPermissionHelper: LocationPermissionHelper
@@ -92,6 +93,9 @@ class LocationActivity : AppCompatActivity() {
         ft.replace(R.id.bottomSheet, fragment)
         ft.commit()
         onMapReady(model)
+
+        val myFormat = NumberFormat.getInstance().apply { isGroupingUsed = true }
+        binding.priceButton.text = getString(R.string.rial, myFormat.format(model.price))
     }
 
 
@@ -102,9 +106,9 @@ class LocationActivity : AppCompatActivity() {
         ) {
             initLocationComponent()
             setupGesturesListener()
-            addAnnotationToMap(model?.origin?.long ?: 0.0, model?.origin?.lat ?: 0.0)
+            addAnnotationToMap(model?.origin?.long ?: 0.0, model?.origin?.lat ?: 0.0, 0)
             model?.destinations?.onEach {
-                addAnnotationToMap(it.long, it.lat)
+                addAnnotationToMap(it.long, it.lat, it.destNumber)
             }
         }
     }
@@ -120,11 +124,11 @@ class LocationActivity : AppCompatActivity() {
             this.locationPuck = LocationPuck2D(
                 bearingImage = AppCompatResources.getDrawable(
                     this@LocationActivity,
-                    com.mapbox.maps.R.drawable.mapbox_user_puck_icon,
+                    com.mapbox.maps.R.drawable.mapbox_user_bearing_icon,
                 ),
                 shadowImage = AppCompatResources.getDrawable(
                     this@LocationActivity,
-                    com.mapbox.maps.R.drawable.mapbox_user_icon_shadow,
+                    com.mapbox.maps.R.drawable.mapbox_mylocation_icon_bearing,
                 ),
                 scaleExpression = interpolate {
                     linear()
@@ -151,11 +155,18 @@ class LocationActivity : AppCompatActivity() {
         mapView.gestures.removeOnMoveListener(onMoveListener)
     }
 
-    private fun addAnnotationToMap(long: Double, lat: Double) {
+    private fun addAnnotationToMap(long: Double, lat: Double, destNumber: Int) {
+
+        val resId = when(destNumber) {
+            0 -> R.drawable.ic_top
+            1 -> R.drawable.ic_dest_one
+            2 -> R.drawable.ic_dest_two
+            else -> R.drawable.red_marker
+        }
 // Create an instance of the Annotation API and get the PointAnnotationManager.
         bitmapFromDrawableRes(
             this,
-            R.drawable.red_marker
+            resId
         )?.let {
             val annotationApi = mapView?.annotations
             val pointAnnotationManager = annotationApi?.createPointAnnotationManager(mapView)
@@ -206,3 +217,8 @@ class LocationActivity : AppCompatActivity() {
         mapView.gestures.removeOnMoveListener(onMoveListener)
     }
 }
+
+data class DestinationsUiModel(
+    val address: String = "",
+    @DrawableRes val image: Int
+)

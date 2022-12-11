@@ -63,9 +63,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
         mapView = binding.mapView
         locationPermissionHelper = LocationPermissionHelper(WeakReference(this))
-        locationPermissionHelper.checkPermissions {
-            onMapReady()
-        }
+        onMapReady()
+        locationPermissionHelper.checkPermissions {}
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
@@ -78,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         })
     }
 
-    private fun onMapReady(model: TerminalsDomainModel? = null) {
+    private fun onMapReady() {
 
         mapView.getMapboxMap().loadStyleUri(
             Style.MAPBOX_STREETS
@@ -99,11 +98,11 @@ class MainActivity : AppCompatActivity() {
             this.locationPuck = LocationPuck2D(
                 bearingImage = AppCompatResources.getDrawable(
                     this@MainActivity,
-                    R.drawable.mapbox_user_puck_icon,
+                    R.drawable.mapbox_user_bearing_icon,
                 ),
                 shadowImage = AppCompatResources.getDrawable(
                     this@MainActivity,
-                    R.drawable.mapbox_user_icon_shadow,
+                    R.drawable.mapbox_mylocation_icon_bearing,
                 ),
                 scaleExpression = Expression.interpolate {
                     linear()

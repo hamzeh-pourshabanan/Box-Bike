@@ -3,14 +3,58 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/rounded_background"
+    android:layoutDirection="rtl"
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <View
+        android:id="@+id/dividerExtraData"
+        android:layout_width="0dp"
+        android:layout_height="2dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="40dp"
+        android:layout_marginEnd="16dp"
+        android:layout_marginBottom="18dp"
+        android:background="#555555"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <ImageView
+        android:id="@+id/originImage"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="18dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:background="@drawable/ic_top"
+        app:layout_constraintTop_toBottomOf="@id/dividerExtraData"
+        />
+    <TextView
+        android:id="@+id/originAddress"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toEndOf="@id/originImage"
+        tools:text="هفت حوض"
+        app:layout_constraintTop_toTopOf="@id/originImage"
+        app:layout_constraintBottom_toBottomOf="@id/originImage"/>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/destinationRv"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/originAddress"/>
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
         android:layout_marginBottom="16dp"
-        android:layout_marginHorizontal="16dp">
+        android:layout_marginHorizontal="16dp"
+        android:layoutDirection="ltr">
 
         <ProgressBar
             android:id="@+id/progress_bar"
@@ -24,7 +68,8 @@
             android:id="@+id/text_view_button"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Enter"
+            android:fontFamily="@font/bold"
+            android:text="@string/accept_request"
             android:textColor="@android:color/white"
             android:padding="6dp"
             android:textSize="16sp"
