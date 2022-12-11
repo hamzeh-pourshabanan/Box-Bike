@@ -4,6 +4,7 @@ import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.graphics.Color
+import android.opengl.Visibility
 import android.os.Bundle
 import android.util.Log
 import android.view.*
@@ -92,6 +93,7 @@ class BottomSheetFragment: Fragment() {
                 override fun onAnimationStart(animation: Animator?) {
                     Log.d("animation", "onAnimationStart")
                     //TODO("Not yet implemented")
+
                 }
 
                 override fun onAnimationEnd(animation: Animator?) {
@@ -118,9 +120,11 @@ class BottomSheetFragment: Fragment() {
         btn.setOnTouchListener { v, event ->
             when(event.action) {
                 MotionEvent.ACTION_DOWN -> {
+                    binding.progressBar.visibility = View.INVISIBLE
                 }
                 MotionEvent.ACTION_UP -> {
                     myView.visibility = View.GONE
+                    binding.progressBar.visibility = View.VISIBLE
                     anim.removeAllListeners()
 
                 }
