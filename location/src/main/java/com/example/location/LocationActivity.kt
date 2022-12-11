@@ -1,7 +1,5 @@
 package com.example.location
 
-import android.animation.Animator
-import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
 import android.content.Context
 import android.content.Intent
@@ -11,17 +9,13 @@ import android.graphics.drawable.BitmapDrawable
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
-import android.view.MotionEvent
-import android.view.View
-import android.view.ViewAnimationUtils
-import android.widget.LinearLayout
-import android.widget.ProgressBar
 import android.widget.Toast
 import androidx.annotation.DrawableRes
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.content.res.AppCompatResources
 import com.example.location.databinding.ActivityLocationBinding
 import com.example.location.domain.TerminalsDomainModel
+import com.example.location.presentation.BottomSheetFragment
 import com.example.location.utils.LocationPermissionHelper
 import com.mapbox.android.gestures.MoveGestureDetector
 import com.mapbox.geojson.Point
@@ -45,20 +39,23 @@ import java.lang.ref.WeakReference
 class LocationActivity : AppCompatActivity() {
     private lateinit var locationPermissionHelper: LocationPermissionHelper
     private lateinit var binding: ActivityLocationBinding
-    private lateinit var anim: Animator
-    private lateinit var myView: LinearLayout
+    private lateinit var model: TerminalsDomainModel
+
     private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
         Log.d(this.javaClass.simpleName, "point: $it")
         // Create a polygon
-        val triangleCoordinates = listOf(
-            listOf(
-                Point.fromLngLat(51.41, 35.80767),
-                Point.fromLngLat(51.49, 35.79),
+
+        val triangleCoordinates =
+            mutableListOf(
+                Point.fromLngLat(model.origin!!.long, model.origin!!.lat),
                 it,
-            )
         )
+
+        model.destinations.onEach { destination ->
+            triangleCoordinates.add(Point.fromLngLat(destination.long, destination.lat))
+        }
 // Convert to a camera options from a given geometry and padding
-        val cameraPositionCoor = mapView.getMapboxMap().cameraForCoordinates(triangleCoordinates[0], EdgeInsets(1.0, 55.0, 0.0, 55.0))
+        val cameraPositionCoor = mapView.getMapboxMap().cameraForCoordinates(triangleCoordinates, EdgeInsets(1.0, 55.0, 20.0, 55.0))
 // Set camera position
         mapView.getMapboxMap().setCamera(cameraPositionCoor)
     }
@@ -88,73 +85,13 @@ class LocationActivity : AppCompatActivity() {
         }
 
         val i: Intent = intent
-        val model: TerminalsDomainModel = i.getParcelableExtra<TerminalsDomainModel>("response") as TerminalsDomainModel
+        model = i.getParcelableExtra<TerminalsDomainModel>("response") as TerminalsDomainModel
         Log.d(this.javaClass.simpleName, "From model: $model")
+        val ft = supportFragmentManager.beginTransaction()
+        val fragment = BottomSheetFragment.newInstance(model)
+        ft.replace(R.id.bottomSheet, fragment)
+        ft.commit()
         onMapReady(model)
-
-        val progressBar: ProgressBar = binding.progressBar
-        val objectAnimator: ObjectAnimator = ObjectAnimator.ofInt(progressBar, "progress", progressBar.progress, 100).setDuration(model.expireDuration.toLong())
-        objectAnimator.addUpdateListener {
-            val progress = it.animatedValue as Int
-            Log.d(this.javaClass.simpleName, "From model: ${it.animatedValue}")
-
-            progressBar.progress = progress
-//            if (progress == 100) this.finish()
-        }
-        objectAnimator.start()
-        val btn = binding.textViewButton
-
-        btn.setOnLongClickListener {
-            myView = binding.revealiew
-            val cx = myView.width/2
-            val cy = myView.height/2
-            val finalRadius = Math.max(myView.width, myView.height)
-            anim =
-                ViewAnimationUtils.createCircularReveal(myView, cx, cy, 0f, finalRadius.toFloat())
-            anim.duration = 3000
-            myView.visibility = View.VISIBLE
-
-            anim.addListener(object: Animator.AnimatorListener {
-                override fun onAnimationStart(animation: Animator?) {
-                    Log.d("animation", "onAnimationStart")
-                    //TODO("Not yet implemented")
-                }
-
-                override fun onAnimationEnd(animation: Animator?) {
-                           this@LocationActivity.finish()
-
-
-                    Log.d("animation", "onAnimationEnd: ${animation?.isRunning}")
-                }
-
-                override fun onAnimationCancel(animation: Animator?) {
-
-                    Log.d("animation", "onAnimationCancel")
-                }
-
-                override fun onAnimationRepeat(animation: Animator?) {
-
-                    Log.d("animation", "onAnimationRepeat")
-                }
-            })
-            anim.start()
-            true
-        }
-
-        btn.setOnTouchListener { v, event ->
-            when(event.action) {
-                MotionEvent.ACTION_DOWN -> {
-               }
-                MotionEvent.ACTION_UP -> {
-                    myView.visibility = View.GONE
-                    anim.removeAllListeners()
-
-                }
-                else -> {}
-            }
-
-            false
-        }
     }
 
 
@@ -204,7 +141,6 @@ class LocationActivity : AppCompatActivity() {
             )
         }
         locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
-//        locationComponentPlugin.addOnIndicatorBearingChangedListener(onIndicatorBearingChangedListener)
         mapView.location2.puckBearingSource = PuckBearingSource.HEADING
     }
 

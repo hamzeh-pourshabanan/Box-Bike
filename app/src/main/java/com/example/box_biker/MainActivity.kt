@@ -1,31 +1,71 @@
 package com.example.box_biker
 
-import android.app.NotificationChannel
-import android.app.NotificationManager
 import android.content.ContentValues.TAG
-import android.graphics.Color
-import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.content.res.AppCompatResources
+import com.example.box_biker.databinding.ActivityMainBinding
+import com.example.location.databinding.ActivityLocationBinding
+import com.example.location.domain.TerminalsDomainModel
+import com.example.location.utils.LocationPermissionHelper
 import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.messaging.FirebaseMessaging
+import com.mapbox.android.gestures.MoveGestureDetector
+import com.mapbox.geojson.Point
+import com.mapbox.maps.CameraOptions
+import com.mapbox.maps.EdgeInsets
+import com.mapbox.maps.MapView
+import com.mapbox.maps.R
+import com.mapbox.maps.Style
+import com.mapbox.maps.extension.style.expressions.generated.Expression
+import com.mapbox.maps.plugin.LocationPuck2D
+import com.mapbox.maps.plugin.PuckBearingSource
+import com.mapbox.maps.plugin.gestures.OnMoveListener
+import com.mapbox.maps.plugin.gestures.gestures
+import com.mapbox.maps.plugin.locationcomponent.OnIndicatorPositionChangedListener
+import com.mapbox.maps.plugin.locationcomponent.location
+import com.mapbox.maps.plugin.locationcomponent.location2
+import java.lang.ref.WeakReference
 
 class MainActivity : AppCompatActivity() {
+    private lateinit var locationPermissionHelper: LocationPermissionHelper
+    private lateinit var binding: ActivityMainBinding
+
+    private lateinit var mapView: MapView
+
+    private val onIndicatorPositionChangedListener = OnIndicatorPositionChangedListener {
+        Log.d(this.javaClass.simpleName, "point: $it")
+        // Create a polygon
+
+// Convert to a camera options from a given geometry and padding
+
+// Set camera position
+        mapView.getMapboxMap().setCamera(CameraOptions.Builder().zoom(15.0).center(it).build())
+    }
+
+    private val onMoveListener = object : OnMoveListener {
+        override fun onMoveBegin(detector: MoveGestureDetector) {
+            onCameraTrackingDismissed()
+        }
+
+        override fun onMove(detector: MoveGestureDetector): Boolean {
+            return false
+        }
+
+        override fun onMoveEnd(detector: MoveGestureDetector) {}
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        createChannel(
-            getString(com.example.location.R.string.egg_notification_channel_id),
-            getString(com.example.location.R.string.egg_notification_channel_name)
-        )
-        createChannel(
-            getString(com.example.location.R.string.breakfast_notification_channel_id),
-            getString(com.example.location.R.string.breakfast_notification_channel_name)
-        )
-
+        binding = ActivityMainBinding.inflate(layoutInflater)
+        setContentView(binding.root)
+        mapView = binding.mapView
+        locationPermissionHelper = LocationPermissionHelper(WeakReference(this))
+        locationPermissionHelper.checkPermissions {
+            onMapReady()
+        }
         FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener { task ->
             if (!task.isSuccessful) {
                 Log.w(TAG, "Fetching FCM registration token failed", task.exception)
@@ -34,38 +74,59 @@ class MainActivity : AppCompatActivity() {
 
             // Get new FCM registration token
             val token = task.result
-
-            // Log and toast
-//            val msg = getString(R.string.msg_token_fmt, token)
-            Log.d(TAG, "token: $token")
-            Toast.makeText(baseContext, token, Toast.LENGTH_SHORT).show()
+            Log.d(TAG, "FCM token: $token")
         })
     }
 
-    private fun createChannel(channelId: String, channelName: String) {
-        // TODO: Step 1.6 START create a channel
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            val notificationChannel = NotificationChannel(
-                channelId,
-                channelName,
-                // TODO: Step 2.4 change importance
-                NotificationManager.IMPORTANCE_HIGH
-            )// TODO: Step 2.6 disable badges for this channel
-                .apply {
-                    setShowBadge(false)
-                }
+    private fun onMapReady(model: TerminalsDomainModel? = null) {
 
-            notificationChannel.enableLights(true)
-            notificationChannel.lightColor = Color.RED
-            notificationChannel.enableVibration(true)
-            notificationChannel.description = "sdfd"
-
-            val notificationManager = getSystemService(
-                NotificationManager::class.java
-            )
-            notificationManager.createNotificationChannel(notificationChannel)
-
+        mapView.getMapboxMap().loadStyleUri(
+            Style.MAPBOX_STREETS
+        ) {
+            initLocationComponent()
+            setupGesturesListener()
         }
-        // TODO: Step 1.6 END create a channel
+    }
+
+    private fun setupGesturesListener() {
+        mapView.gestures.addOnMoveListener(onMoveListener)
+    }
+
+    private fun initLocationComponent() {
+        val locationComponentPlugin = mapView.location
+        locationComponentPlugin.updateSettings {
+            this.enabled = true
+            this.locationPuck = LocationPuck2D(
+                bearingImage = AppCompatResources.getDrawable(
+                    this@MainActivity,
+                    R.drawable.mapbox_user_puck_icon,
+                ),
+                shadowImage = AppCompatResources.getDrawable(
+                    this@MainActivity,
+                    R.drawable.mapbox_user_icon_shadow,
+                ),
+                scaleExpression = Expression.interpolate {
+                    linear()
+                    zoom()
+                    stop {
+                        literal(0.0)
+                        literal(0.6)
+                    }
+                    stop {
+                        literal(20.0)
+                        literal(1.0)
+                    }
+                }.toJson()
+            )
+        }
+        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.location2.puckBearingSource = PuckBearingSource.HEADING
+    }
+
+    private fun onCameraTrackingDismissed() {
+        Toast.makeText(this, "onCameraTrackingDismissed", Toast.LENGTH_SHORT).show()
+        mapView.location
+            .removeOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        mapView.gestures.removeOnMoveListener(onMoveListener)
     }
 }

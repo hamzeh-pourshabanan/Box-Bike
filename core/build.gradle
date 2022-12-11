@@ -1,7 +1,6 @@
 plugins {
-    id 'com.android.application'
+    id 'com.android.library'
     id 'org.jetbrains.kotlin.android'
-    id 'com.google.gms.google-services'
     id 'kotlin-android'
     id 'org.jetbrains.kotlin.plugin.serialization' version '1.7.20'
     id 'org.jetbrains.kotlin.android.extensions'
@@ -11,14 +10,11 @@ android {
     compileSdk 32
 
     defaultConfig {
-        applicationId "com.example.box_biker"
         minSdk 21
         targetSdk 32
-        versionCode 1
-        versionName "1.0"
-        multiDexEnabled true
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles "consumer-rules.pro"
     }
 
     buildTypes {
@@ -35,10 +31,6 @@ android {
         jvmTarget = '1.8'
     }
 
-    androidExtensions {
-        experimental = true
-    }
-
     viewBinding{
         enabled = true
     }
@@ -48,21 +40,13 @@ android {
 }
 
 dependencies {
-    def multidex_version = "2.0.1"
-    implementation "androidx.multidex:multidex:$multidex_version"
-    api project(path: ':location')
-    api project(path: ':core')
-    implementation platform('com.google.firebase:firebase-bom:31.1.1')
-    // Firebase Cloud Messaging (Kotlin)
-    //for fcm
-    implementation 'com.google.firebase:firebase-messaging:23.1.1'
-
-    implementation "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
-
+    api "org.jetbrains.kotlinx:kotlinx-serialization-json:1.4.1"
+    api ('com.mapbox.maps:android:10.9.1'){
+        exclude group: 'androidx.interpolator', module: 'interpolator'
+    }
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation 'androidx.appcompat:appcompat:1.5.1'
     implementation 'com.google.android.material:material:1.7.0'
-    implementation 'androidx.constraintlayout:constraintlayout:2.1.4'
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.4'
     androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.0'

@@ -1,7 +1,7 @@
 package com.example.location.domain
 
 import android.os.Parcelable
-import com.example.location.base.DomainModel
+import com.example.core.base.model.DomainModel
 import kotlinx.android.parcel.Parcelize
 
 @Parcelize
@@ -24,4 +24,4 @@ data class Origin(
     val address: String,
     val lat: Double,
     val long: Double
-):DomainModel, Parcelable
+): DomainModel, Parcelable

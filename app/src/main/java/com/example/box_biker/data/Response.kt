@@ -1,6 +1,6 @@
 package com.example.box_biker.data
 
-import com.example.location.base.DataModel
+import com.example.core.base.model.DataModel
 import com.example.location.domain.TerminalsDomainModel
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
