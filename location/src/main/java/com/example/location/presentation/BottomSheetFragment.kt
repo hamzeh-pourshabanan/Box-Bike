@@ -3,11 +3,13 @@ package com.example.location.presentation
 import android.animation.Animator
 import android.animation.ObjectAnimator
 import android.annotation.SuppressLint
+import android.graphics.Color
 import android.os.Bundle
 import android.util.Log
 import android.view.*
 import android.widget.LinearLayout
 import android.widget.ProgressBar
+import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import com.example.location.DestinationsUiModel
 import com.example.location.LocationActivity
