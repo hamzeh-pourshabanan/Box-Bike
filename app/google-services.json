@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "511405048940",
+    "project_id": "fcm-notifications-c2416",
+    "storage_bucket": "fcm-notifications-c2416.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511405048940:android:d33891edc70fccedb98449",
+        "android_client_info": {
+          "package_name": "com.example.android.eggtimernotifications"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511405048940-ok4e0t1l0ov5vlbjildgeduhinnn3mpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsuBSnAMKBbrX-pmB8-weJ-EZjKm7P154"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511405048940-ok4e0t1l0ov5vlbjildgeduhinnn3mpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:511405048940:android:2e9bcf53569dfaf8b98449",
+        "android_client_info": {
+          "package_name": "com.example.box_biker"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "511405048940-ok4e0t1l0ov5vlbjildgeduhinnn3mpe.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAsuBSnAMKBbrX-pmB8-weJ-EZjKm7P154"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "511405048940-ok4e0t1l0ov5vlbjildgeduhinnn3mpe.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
