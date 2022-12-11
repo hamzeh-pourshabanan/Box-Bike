@@ -64,6 +64,13 @@
             android:layout_height="match_parent"
             android:indeterminate="false"
             style="?android:attr/progressBarStyleHorizontal" />
+        <LinearLayout
+            android:orientation="vertical" android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@drawable/ic_bg_btn_rounded"
+            android:id="@+id/revealiew"
+            android:visibility="invisible"
+            />
 
         <TextView
             android:id="@+id/text_view_button"
@@ -76,13 +83,7 @@
             android:textSize="16sp"
             android:textStyle="bold"
             android:gravity="center"/>
-        <LinearLayout
-            android:orientation="vertical" android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/ic_bg_btn_rounded"
-            android:id="@+id/revealiew"
-            android:visibility="invisible"
-            />
+
 
     </FrameLayout>
 
