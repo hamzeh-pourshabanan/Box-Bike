@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/Box-Biker.iml" filepath="$PROJECT_DIR$/.idea/modules/Box-Biker.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.main.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/app/Box-Biker.app.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.main.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/core/Box-Biker.core.unitTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.iml" filepath="$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.androidTest.iml" filepath="$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.androidTest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.main.iml" filepath="$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.main.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.unitTest.iml" filepath="$PROJECT_DIR$/.idea/modules/location/Box-Biker.location.unitTest.iml" />
+    </modules>
+  </component>
+</project>
