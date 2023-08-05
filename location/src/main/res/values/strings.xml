@@ -1,5 +1,4 @@
 <resources>
-    <string name="mapbox_access_token">pk.eyJ1IjoiaGFtemVoMzMiLCJhIjoiY2xiYXFkZXQ4MGxlcTNwcHJhNXZ4a3RnZSJ9.6-fAHVEa3wZnu4JaGwk-fw</string>
     <string name="app_name">Egg Timer</string>
     <string name="egg_prompt">How do you like your egg?</string>
     <string name="timer_on">Start</string>
