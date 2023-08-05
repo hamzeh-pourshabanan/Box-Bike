@@ -50,13 +50,14 @@ class LocationActivity : AppCompatActivity() {
             mutableListOf(
                 Point.fromLngLat(model.origin!!.long, model.origin!!.lat),
                 it,
-        )
+            )
 
         model.destinations.onEach { destination ->
             triangleCoordinates.add(Point.fromLngLat(destination.long, destination.lat))
         }
 // Convert to a camera options from a given geometry and padding
-        val cameraPositionCoor = mapView.getMapboxMap().cameraForCoordinates(triangleCoordinates, EdgeInsets(1.0, 55.0, 20.0, 55.0))
+        val cameraPositionCoor = mapView.getMapboxMap()
+            .cameraForCoordinates(triangleCoordinates, EdgeInsets(1.0, 55.0, 20.0, 55.0))
 // Set camera position
         mapView.getMapboxMap().setCamera(cameraPositionCoor)
     }
@@ -73,6 +74,7 @@ class LocationActivity : AppCompatActivity() {
         override fun onMoveEnd(detector: MoveGestureDetector) {}
     }
     private lateinit var mapView: MapView
+
     @SuppressLint("ClickableViewAccessibility")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -144,7 +146,9 @@ class LocationActivity : AppCompatActivity() {
                 }.toJson()
             )
         }
-        locationComponentPlugin.addOnIndicatorPositionChangedListener(onIndicatorPositionChangedListener)
+        locationComponentPlugin.addOnIndicatorPositionChangedListener(
+            onIndicatorPositionChangedListener
+        )
         mapView.location2.puckBearingSource = PuckBearingSource.HEADING
     }
 
@@ -157,7 +161,7 @@ class LocationActivity : AppCompatActivity() {
 
     private fun addAnnotationToMap(long: Double, lat: Double, destNumber: Int) {
 
-        val resId = when(destNumber) {
+        val resId = when (destNumber) {
             0 -> R.drawable.ic_top
             1 -> R.drawable.ic_dest_one
             2 -> R.drawable.ic_dest_two
@@ -180,12 +184,18 @@ class LocationActivity : AppCompatActivity() {
 // Add the resulting pointAnnotation to the map.
             pointAnnotationManager?.create(pointAnnotationOptions)
             pointAnnotationManager?.addClickListener {
-                mapView.getMapboxMap().setCamera(CameraOptions.Builder().zoom(14.8).anchor(mapView.getMapboxMap().pixelForCoordinate(
-                    Point.fromLngLat(long, lat))).build())
+                mapView.getMapboxMap().setCamera(
+                    CameraOptions.Builder().zoom(14.8).anchor(
+                        mapView.getMapboxMap().pixelForCoordinate(
+                            Point.fromLngLat(long, lat)
+                        )
+                    ).build()
+                )
                 true
             }
         }
     }
+
     private fun bitmapFromDrawableRes(context: Context, @DrawableRes resourceId: Int) =
         convertDrawableToBitmap(AppCompatResources.getDrawable(context, resourceId))
 
