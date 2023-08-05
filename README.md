@@ -9,3 +9,12 @@ Box Biker is an Android app that demonstrates the integration and usage of the M
 - Utilize Mapbox APIs to provide geolocation services, route calculations, and more.
 - Showcase best practices for efficient map rendering and handling user interactions.
 
+## Getting Started
+
+To get started with Box Biker and integrate Mapbox into your Android app, follow these steps:
+
+1. Clone the repository: `git clone https://github.com/your-username/box-biker.git`
+2. Open the project in Android Studio.
+3. Sign up for a Mapbox account and obtain your API key.
+4. Replace `MAPBOX_DOWNLOADS_TOKEN` in the `gradle.properties` file with your actual Mapbox API key.
+5. Build and run the app on an emulator or physical device.
