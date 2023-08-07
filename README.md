@@ -35,4 +35,9 @@ Contributions are always welcome! If you find any issues or want to enhance the 
 
 This project is licensed under the [MIT License](LICENSE).
 
+---
+
+Happy coding!
+
+Developed with ❤️ by [Hamzeh](https://github.com/hamzeh-pourshabanan)
 
