@@ -18,3 +18,12 @@ To get started with Box Biker and integrate Mapbox into your Android app, follow
 3. Sign up for a Mapbox account and obtain your API key.
 4. Replace `MAPBOX_DOWNLOADS_TOKEN` in the `gradle.properties` file with your actual Mapbox API key.
 5. Build and run the app on an emulator or physical device.
+
+## Mapbox Setup
+
+Before running the app, you'll need to configure Mapbox:
+
+1. Sign up for a Mapbox account at [https://www.mapbox.com/](https://www.mapbox.com/).
+2. Create a new project and obtain your Mapbox API key.
+3. In the `gradle.properties` file, replace `MAPBOX_DOWNLOADS_TOKEN` with your Mapbox API key.
+
