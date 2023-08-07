@@ -27,3 +27,7 @@ Before running the app, you'll need to configure Mapbox:
 2. Create a new project and obtain your Mapbox API key.
 3. In the `gradle.properties` file, replace `MAPBOX_DOWNLOADS_TOKEN` with your Mapbox API key.
 
+## Contributions
+
+Contributions are always welcome! If you find any issues or want to enhance the app, feel free to open a pull request.
+
