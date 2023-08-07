@@ -31,3 +31,8 @@ Before running the app, you'll need to configure Mapbox:
 
 Contributions are always welcome! If you find any issues or want to enhance the app, feel free to open a pull request.
 
+## License
+
+This project is licensed under the [MIT License](LICENSE).
+
+
